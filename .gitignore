@@ -152,15 +152,12 @@ typings/
 
 
 ### VisualStudioCode template
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
-
-
-
 
 ### Windows template
 # Windows thumbnail cache files
@@ -274,6 +271,7 @@ cride/media/
 
 
 .ipython/
+.envs
 .env
 .envs/*
 !.envs/.local/
