@@ -98,3 +98,5 @@ export makes a environment variable in the console actual, for only use docker-c
 ~~~bash
 export COMPOSE_FILE = local.yml
 ~~~
+
+HTTPie for do request at the server from the console
