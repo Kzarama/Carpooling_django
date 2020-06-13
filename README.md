@@ -80,7 +80,7 @@ docker-compose run --rm --service-port django
 ~~~
 In urls.py put
 ~~~python
-import ipbd; ipdb.set_trace()
+import ipdb; ipdb.set_trace()
 ~~~
 
 ---
