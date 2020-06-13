@@ -84,6 +84,12 @@ import ipbd; ipdb.set_trace()
 ~~~
 
 ---
+
+## Serializer
+Are containers that allows take types of complex data, then turn then in native data of python for the posterior use like json or xml. 
+
+---
+
 ## Modules
 
 - environ = allows make operations with the paths
