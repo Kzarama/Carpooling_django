@@ -9,7 +9,7 @@ from cride.circles.serializers import CircleSerializer, CreateCircleSerializer
 def list_circles(request):
     circles = Circle.objects.filter(is_public=True)
     serializer = CircleSerializer(circles, many=True)
-    return Response(serializer)
+    return Response(serializer.data)
 
 @api_view(['POST'])
 def create_circle(request):
