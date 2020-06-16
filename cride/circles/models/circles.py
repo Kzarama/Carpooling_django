@@ -14,6 +14,12 @@ class Circle(CRideModel):
     about = models.CharField('circle description', max_length=255)
     picture= models.ImageField(upload_to='circles/pictures', blank=True, null=True)
 
+    members = models.ManyToManyField(
+        'users.User', 
+        through='circles.Membership',
+        through_fields=('circle', 'user')
+    )
+
     # Stats
     rides_taken = models.PositiveIntegerField(default=0)
     rides_offered = models.PositiveIntegerField(default=0)
