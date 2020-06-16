@@ -78,9 +78,30 @@ To run django in like a only service
 ~~~bash
 docker-compose run --rm --service-port django
 ~~~
-In urls.py put
+In the file put
 ~~~python
 import ipdb; ipdb.set_trace()
+~~~
+
+---
+
+## Delete migrations
+First delete a migrations files  
+List volumes 
+~~~bash
+docker volume ls
+~~~
+Delete volume of postgres
+~~~bash
+docker volume rm carpooling_local_postgres_data
+~~~
+Create migration file
+~~~bash
+docker-compose run --rm django python manage.py makemigrations
+~~~
+Make changes
+~~~bash
+docker-compose run --rm django python manage.py migrate
 ~~~
 
 ---
