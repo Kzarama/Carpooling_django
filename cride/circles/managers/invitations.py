@@ -1,4 +1,4 @@
-from django.db models
+from django.db import models
 
 import random
 from string import ascii_uppercase, digits
