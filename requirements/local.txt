@@ -8,10 +8,11 @@ django-extensions==2.1.4
 
 # Testing
 mypy==0.650
-pytest==4.0.2
+pytest==5.2.0
 pytest-sugar==0.9.2
 pytest-django==3.4.4
 factory-boy==2.11.1
+attrs==19.1.0
 
 # Code quality
 flake8==3.6.0
