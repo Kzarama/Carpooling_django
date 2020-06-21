@@ -1,5 +1,7 @@
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, viewsets, status
+from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
 
 from rest_framework.permissions import IsAuthenticated
 from cride.circles.permissions.memberships import IsActiveCircleMember
@@ -7,7 +9,7 @@ from cride.rides.permissions.rides import IsRideOwner
 
 from rest_framework.filters import SearchFilter, OrderingFilter
 
-from cride.rides.serializers import CreateRideSerializer, RideModelSerializer
+from cride.rides.serializers import CreateRideSerializer, RideModelSerializer, JoinRideSerializer
 
 from cride.circles.models import Circle
 
@@ -45,6 +47,8 @@ class RideViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateM
         """Return serializer based on action"""
         if self.action =='create':
             return CreateRideSerializer
+        if self.action == 'update':
+            return JoinRideSerializer
         return RideModelSerializer
 
     def get_queryset(self):
@@ -55,3 +59,18 @@ class RideViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateM
             is_active=True,
             available_seats__gte=1
         )
+    
+    @action(detail=True, methods=['post'])
+    def join(self, request, *args, **kwargs):
+        """Add requesting user to ride"""
+        ride = self.get_object()
+        serializer = JoinRideSerializer(
+            ride,
+            data={'passenger': request.user.pk},
+            context={'ride': ride, 'circle': self.circle},
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        ride = serializer.save()
+        data = RideModelSerializer(ride).data
+        return Response(data, status=status.HTTP_200_OK)
