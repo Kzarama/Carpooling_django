@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from rest_framework.permissions import IsAuthenticated
 from cride.circles.permissions.memberships import IsActiveCircleMember
-from cride.rides.permissions.rides import IsRideOwner
+from cride.rides.permissions.rides import IsRideOwner, IsNotRideOwner
 
 from rest_framework.filters import SearchFilter, OrderingFilter
 
@@ -34,6 +34,8 @@ class RideViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateM
         permissions = [IsAuthenticated, IsActiveCircleMember]
         if self.action in ['update', 'partial_update']:
             permissions.append(IsRideOwner)
+        if action == 'join':
+            permissions.append(IsNotRideOwner)
         return [permission() for permission in permissions]
 
 
