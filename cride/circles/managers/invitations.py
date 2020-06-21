@@ -3,6 +3,7 @@ from django.db import models
 import random
 from string import ascii_uppercase, digits
 
+
 class InvitationManager(models.Manager):
     """Invitation manage
 

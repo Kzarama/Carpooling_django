@@ -2,6 +2,7 @@ from django.db import models
 
 from cride.utils.models import CRideModel
 
+
 class Membership(CRideModel):
     """ Membership model
 

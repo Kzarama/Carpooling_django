@@ -12,6 +12,7 @@ import jwt
 import time
 from datetime import timedelta
 
+
 def gen_verification_token(user):
     """Create JWT token that the user can use to verify its account"""
     exp_date = timezone.now() + timedelta(days=3)
@@ -22,6 +23,7 @@ def gen_verification_token(user):
     }
     token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
     return token.decode()
+
 
 @task(name='send_confirmation_email', max_retries=3)
 def send_confirmation_email(user_pk):
@@ -34,7 +36,6 @@ def send_confirmation_email(user_pk):
 
     subject = 'Welcome @{}! Verify your account to start using Compate Ride.'.format(user.username)
     from_email = 'Comparte Ride <noreply@comparteride.com>'
-    text_content = 'This is an important message.'
     content = render_to_string(
         'emails/users/account_verification.html',
         {'token': verification_token, 'user': user}
@@ -42,6 +43,7 @@ def send_confirmation_email(user_pk):
     msg = EmailMultiAlternatives(subject, content, from_email, [user.email])
     msg.attach_alternative(content, "text/html")
     msg.send()
+
 
 @periodic_task(name='disable_finished_rides', run_every=timedelta(seconds=5))
 def disable_finished_rides():

@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from cride.users.models import Profile
 
+
 class ProfileModelSerializer(serializers.ModelSerializer):
     """Profile model serializer"""
     class Meta:

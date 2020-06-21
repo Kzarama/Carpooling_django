@@ -10,6 +10,7 @@ from cride.circles.serializers import CircleModelSerializer
 
 from cride.circles.models import Circle, Membership
 
+
 class CircleViewSet(mixins.CreateModelMixin,
                     mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
@@ -32,12 +33,12 @@ class CircleViewSet(mixins.CreateModelMixin,
         if self.action == 'list':
             return queryset.filter(is_public=True)
         return queryset
-    
+
     def get_permissions(self):
         """Assign permission based on action"""
         permissions = [IsAuthenticated]
         if self.action in ['update', 'partial_update']:
-            permission.append(IsCircleAdmin)
+            permissions.append(IsCircleAdmin)
         return [permission() for permission in permissions]
 
     def perform_create(self, serializer):

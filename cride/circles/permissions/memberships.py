@@ -2,9 +2,9 @@ from rest_framework.permissions import BasePermission
 
 from cride.circles.models import Membership
 
+
 class IsActiveCircleMember(BasePermission):
     """Allow access only to circle members
-
     Expect that the views implementing this permission
     have a `circle attribute assigned`
     """
@@ -20,7 +20,8 @@ class IsActiveCircleMember(BasePermission):
         except Membership.DoesNotExist:
             return False
         return True
-    
+
+
 class IsSelfMember(BasePermission):
     """Allow access only to member owners"""
 

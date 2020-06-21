@@ -7,6 +7,7 @@ from cride.circles.models import Circle, Invitation, Membership
 from cride.users.models import User, Profile
 from rest_framework.authtoken.models import Token
 
+
 class InvitationsManagerTestCase(TestCase):
     """Invitations manager test case"""
 
@@ -59,7 +60,8 @@ class InvitationsManagerTestCase(TestCase):
         )
 
         self.assertNotEqual(code, invitation.code)
-    
+
+
 class MemberInvitationsAPITestCase(APITestCase):
     """Member invitation API test case."""
 

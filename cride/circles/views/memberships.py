@@ -10,7 +10,13 @@ from cride.circles.permissions.memberships import IsActiveCircleMember, IsSelfMe
 
 from cride.circles.serializers import MembershipModelSerializer, AddMemberSerializer
 
-class MembershipViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+
+class MembershipViewSet(
+                        mixins.ListModelMixin,
+                        mixins.CreateModelMixin,
+                        mixins.RetrieveModelMixin,
+                        mixins.DestroyModelMixin,
+                        viewsets.GenericViewSet):
     """Circle membership view set"""
 
     serializer_class = MembershipModelSerializer
@@ -23,7 +29,7 @@ class MembershipViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.R
             slug_name=slug_name
         )
         return super(MembershipViewSet, self).dispatch(request, *args, **kwargs)
-    
+
     def get_permissions(self):
         """Assign permissions based on action"""
         permissions = [IsAuthenticated]
@@ -51,14 +57,15 @@ class MembershipViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.R
 
     def perform_destroy(self, instance):
         """Disable membership"""
-        instance.is_active=False
+        instance.is_active = False
         instance.save()
 
     @action(detail=True, methods=['get'])
     def invitations(self, request, *args, **kwargs):
         """Retrieve a member's invitation breakdown
-
-        Wll return a list containing all the members that have used its invitations and another list containing the invitations that haven't being used yet
+        Wll return a list containing all the members that have
+        used its invitations and another list containing the
+        invitations that haven't being used yet
         """
         member = self.get_object()
         invited_members = Membership.objects.filter(
@@ -93,7 +100,7 @@ class MembershipViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.R
         """Handle member creation from invitation code"""
         serializer = AddMemberSerializer(
             data=request.data,
-            context={'circle': self.circle, 'request':request}
+            context={'circle': self.circle, 'request': request}
         )
         serializer.is_valid(raise_exception=True)
         member = serializer.save()

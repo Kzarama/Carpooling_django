@@ -14,6 +14,7 @@ from cride.users.models import User, Profile
 
 import jwt
 
+
 class UserModelSerializer(serializers.ModelSerializer):
     """User model serializer"""
 
@@ -31,6 +32,7 @@ class UserModelSerializer(serializers.ModelSerializer):
             'profile'
         )
 
+
 class UserSignUpSerializer(serializers.Serializer):
     """User signup serializer"""
     email = serializers.EmailField(
@@ -46,7 +48,7 @@ class UserSignUpSerializer(serializers.Serializer):
         message='Phone number must be entrered in format: +999999999. Up to 15 digits allowed.'
     )
     phone_number = serializers.CharField(validators=[phone_regex])
-    
+
     password = serializers.CharField(min_length=8, max_length=64)
     password_confirmation = serializers.CharField(min_length=8, max_length=64)
 
@@ -71,6 +73,7 @@ class UserSignUpSerializer(serializers.Serializer):
         send_confirmation_email.delay(user_pk=user.pk)
         return user
 
+
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(min_length=8, max_length=64)
@@ -88,6 +91,7 @@ class UserLoginSerializer(serializers.Serializer):
         token, created = Token.objects.get_or_create(user=self.context['user'])
         return self.context['user'], token.key
 
+
 class AccountVerificationSerializer(serializers.Serializer):
     """Account verification serializer"""
     token = serializers.CharField()
@@ -102,10 +106,10 @@ class AccountVerificationSerializer(serializers.Serializer):
             raise serializers.ValidationError('Invalid Token')
         if payload['type'] != 'email_confirmation':
             raise serializers.ValidationError('Invalid Token')
-        
+
         self.context['payload'] = payload
         return data
-    
+
     def save(self):
         """Update user's verified status"""
         payload = self.context['payload']

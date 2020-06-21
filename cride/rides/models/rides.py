@@ -2,6 +2,7 @@ from django.db import models
 
 from cride.utils.models import CRideModel
 
+
 class Ride(CRideModel):
     """Ride model"""
     offered_by = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True)
@@ -32,5 +33,5 @@ class Ride(CRideModel):
             to=self.arrival_location,
             day=self.departure_date.strftime('%a %d, %b'),
             i_time=self.departure_date.strftime('%I:%M %p'),
-            time=self.arrival_date-strftime('%I:%M %p')
+            time=self.arrival_date.strftime('%I:%M %p')
         )

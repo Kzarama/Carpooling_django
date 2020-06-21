@@ -6,6 +6,7 @@ from cride.users.serializers import UserModelSerializer
 
 from cride.circles.models import Membership, Invitation
 
+
 class MembershipModelSerializer(serializers.ModelSerializer):
     """Member model serializer"""
 
@@ -35,6 +36,7 @@ class MembershipModelSerializer(serializers.ModelSerializer):
             'rides_offered'
         )
 
+
 class AddMemberSerializer(serializers.Serializer):
     """Add member serializer
 
@@ -51,7 +53,7 @@ class AddMemberSerializer(serializers.Serializer):
         query = Membership.objects.filter(circle=circle, user=user)
         if query.exists():
             raise serializers.ValidationError('User is already member of this circle')
-    
+
     def validate_invitation_code(self, data):
         """Verify code exists and that it is related to the circle"""
         try:
@@ -100,7 +102,7 @@ class AddMemberSerializer(serializers.Serializer):
             circle=circle
         )
         issuer.used_invitation += 1
-        issuer.remaining_invitations -=1
+        issuer.remaining_invitations -= 1
         issuer.save()
 
         return member

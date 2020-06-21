@@ -9,6 +9,7 @@ from cride.users.serializers import UserModelSerializer
 from datetime import timedelta
 from django.utils import timezone
 
+
 class RideModelSerializer(serializers.ModelSerializer):
     """Ride model serializer"""
 
@@ -21,16 +22,16 @@ class RideModelSerializer(serializers.ModelSerializer):
         """Meta class"""
         model = Ride
         fields = (
-            'offered_by', 
-            'offered_in', 
-            'passengers', 
-            'available_seats', 
-            'comments', 
-            'departure_location', 
-            'departure_date', 
-            'arrival_location', 
-            'arrival_date', 
-            'rating', 
+            'offered_by',
+            'offered_in',
+            'passengers',
+            'available_seats',
+            'comments',
+            'departure_location',
+            'departure_date',
+            'arrival_location',
+            'arrival_date',
+            'rating',
             'is_active'
         )
         read_only_fields = (
@@ -46,6 +47,7 @@ class RideModelSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Ongoing rides cannot be modified')
         return super(RideModelSerializer, self).update(instance, data)
 
+
 class CreateRideSerializer(serializers.ModelSerializer):
     """Create ride serializer"""
 
@@ -56,12 +58,12 @@ class CreateRideSerializer(serializers.ModelSerializer):
         """Meta class"""
         model = Ride
         fields = (
-            'offered_by', 
-            'available_seats', 
-            'comments', 
-            'departure_location', 
-            'departure_date', 
-            'arrival_location', 
+            'offered_by',
+            'available_seats',
+            'comments',
+            'departure_location',
+            'departure_date',
+            'arrival_location',
             'arrival_date'
         )
 
@@ -110,6 +112,7 @@ class CreateRideSerializer(serializers.ModelSerializer):
 
         return ride
 
+
 class JoinRideSerializer(serializers.ModelSerializer):
     """Join ride serializer"""
     passenger = serializers.IntegerField()
@@ -148,7 +151,7 @@ class JoinRideSerializer(serializers.ModelSerializer):
         if Ride.objects.filter(passengers__pk=data['passenger']):
             raise serializers.ValidationError('Passenger is already in this trip')
         return data
-    
+
     def update(self, instace, data):
         """Add passenger to ride, and update stats"""
         ride = self.context['ride']
@@ -170,6 +173,7 @@ class JoinRideSerializer(serializers.ModelSerializer):
         circle.rides_taken += 1
         circle.save()
         return ride
+
 
 class EndRideSerializer(serializers.ModelSerializer):
     """End ride serializer"""

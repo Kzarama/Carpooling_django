@@ -4,6 +4,7 @@ from rest_framework import serializers
 
 from cride.rides.models import Rating
 
+
 class CreateRideRatingSerializer(serializers.ModelSerializer):
     """Create ride serializer"""
     rating = serializers.IntegerField(min_value=1, max_value=5)
@@ -52,7 +53,7 @@ class CreateRideRatingSerializer(serializers.ModelSerializer):
         self.context['ride'].save()
 
         user_avg = round(
-            Reting.objects.filter(
+            Rating.objects.filter(
                 rated_user=offered_by
             ).aggregate(Avg('rating'))['rating_avg'],
             1

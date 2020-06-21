@@ -2,16 +2,17 @@ from django.db import models
 
 from cride.utils.models import CRideModel
 
+
 class Profile(CRideModel):
-    """ Profile model 
-    
+    """ Profile model
+
     A profile holds a user's publi data like biography, picture and statistics.
     """
 
     user = models.OneToOneField('users.User', on_delete=models.CASCADE)
 
     picture = models .ImageField(
-        'profile picture', 
+        'profile picture',
         upload_to='users/pictures/',
         blank=True,
         null=True

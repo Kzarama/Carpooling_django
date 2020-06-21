@@ -7,16 +7,22 @@ from cride.users.permissions import IsAccountOwner
 
 from cride.users.serializers.profiles import ProfileModelSerializer
 from cride.circles.serializers import CircleModelSerializer
-from cride.users.serializers import UserLoginSerializer, UserModelSerializer, UserSignUpSerializer, AccountVerificationSerializer
+from cride.users.serializers import (
+    UserLoginSerializer,
+    UserModelSerializer,
+    UserSignUpSerializer,
+    AccountVerificationSerializer
+)
 
 from cride.users.models import User
 from cride.circles.models import Circle
+
 
 class UserViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
     """User view set
     Handle sign up, login and account verification
     """
-    
+
     queryset = User.objects.filter(is_active=True, is_client=True)
     serializer_class = UserModelSerializer
     lookup_field = 'username'
@@ -27,7 +33,8 @@ class UserViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.G
             permissions = [AllowAny]
         elif self.action in ['retrieve', 'update', 'partial_update']:
             permissions = [IsAuthenticated, IsAccountOwner]
-        else: permissions = [IsAuthenticated]
+        else:
+            permissions = [IsAuthenticated]
         return [permission() for permission in permissions]
 
     @action(detail=False, methods=['post'])
@@ -41,7 +48,7 @@ class UserViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.G
             'access_token': token,
         }
         return Response(data, status=status.HTTP_201_CREATED)
-    
+
     @action(detail=False, methods=['post'])
     def signup(self, request):
         """User sign up"""
@@ -66,7 +73,7 @@ class UserViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.G
         profile = user.profile
         partial = request.method == 'PATCH'
         serializer = ProfileModelSerializer(
-            profile, 
+            profile,
             data=request.data,
             partial=partial
         )
@@ -83,8 +90,8 @@ class UserViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.G
             membership__is_active=True
         )
         data = {
-            'user':response.data,
-            'circles':CircleModelSerializer(circles, many=True).data
+            'user': response.data,
+            'circles': CircleModelSerializer(circles, many=True).data
         }
         response.data = data
         return response

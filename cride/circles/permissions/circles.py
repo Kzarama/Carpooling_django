@@ -2,6 +2,7 @@ from rest_framework.permissions import BasePermission
 
 from cride.circles.models import Membership
 
+
 class IsCircleAdmin(BasePermission):
     """Allow access only too circle admin"""
 

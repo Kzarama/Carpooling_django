@@ -9,14 +9,26 @@ from cride.rides.permissions.rides import IsRideOwner, IsNotRideOwner
 
 from rest_framework.filters import SearchFilter, OrderingFilter
 
-from cride.rides.serializers import CreateRideSerializer, RideModelSerializer, JoinRideSerializer, EndRideSerializer, CreateRideRatingSerializer
+from cride.rides.serializers import (
+    CreateRideSerializer,
+    RideModelSerializer,
+    JoinRideSerializer,
+    EndRideSerializer,
+    CreateRideRatingSerializer)
 
 from datetime import timedelta
 from django.utils import timezone
 
 from cride.circles.models import Circle
 
-class RideViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+
+class RideViewSet(
+                  mixins.ListModelMixin,
+                  mixins.CreateModelMixin,
+                  mixins.RetrieveModelMixin,
+                  mixins.UpdateModelMixin,
+                  viewsets.GenericViewSet
+                  ):
     """Ride view set"""
     filter_backends = (SearchFilter, OrderingFilter)
     ordering = ('departure_date', 'arrival_date', 'available_seats')
@@ -38,7 +50,6 @@ class RideViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.Retriev
             permissions.append(IsNotRideOwner)
         return [permission() for permission in permissions]
 
-
     def get_serializer_context(self):
         """Add circle to serializer context"""
         context = super(RideViewSet, self).get_serializer_context()
@@ -47,7 +58,7 @@ class RideViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.Retriev
 
     def get_serializer_class(self):
         """Return serializer based on action"""
-        if self.action =='create':
+        if self.action == 'create':
             return CreateRideSerializer
         if self.action == 'join':
             return JoinRideSerializer
@@ -67,7 +78,7 @@ class RideViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.Retriev
                 available_seats__gte=1
             )
         return self.circle.ride_set.all()
-    
+
     @action(detail=True, methods=['post'])
     def join(self, request, *args, **kwargs):
         """Add requesting user to ride"""
@@ -108,7 +119,7 @@ class RideViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.Retriev
         context = self.get_serializer_context()
         context['ride'] = ride
         serializer = serializer_class(data=request.data, context=context)
-        serializer,is_valid(raise_exception=True)
+        serializer.is_valid(raise_exception=True)
         ride = serializer.save()
         data = RideModelSerializer(ride).data
         return Response(data, status=status.HTTP_201_CREATED)
