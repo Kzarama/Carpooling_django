@@ -20,13 +20,13 @@ class CircleAdmin(admin.ModelAdmin):
     def make_verified(self, request, queryset):
         """Make circles verified"""
         queryset.update(verified=True)
-    
+
     make_verified.short_description = 'Make selected circles verified'
 
     def make_unverified(self, request, queryset):
         """Make circles unverified"""
         queryset.update(verified=False)
-    
+
     make_unverified.short_description = 'Make selected circles unverified'
 
     def download_today_rides(self, request, queryset):
@@ -62,7 +62,7 @@ class CircleAdmin(admin.ModelAdmin):
                 str(ride.arrival_date),
                 ride.rating
             ])
-        
+
         return response
 
     download_today_rides.short_description = 'Download today rides'
